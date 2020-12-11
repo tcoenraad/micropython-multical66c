@@ -23,10 +23,10 @@ def fetch_standard_data():
     data = response.decode("utf-8").replace(" ", "")
     parts = [data[i:i+7] for i in range(0, len(data), 7)]
     return {
-        "energy":   int(parts[0]) / 100,
-        "volume":   int(parts[1]) / 100,
-        "temp_in":  int(parts[3]) / 100,
-        "temp_out": int(parts[4]) / 100
+        "energy":             int(parts[0]) / 100,
+        "volume":             int(parts[1]) / 100,
+        "temperature_flow":   int(parts[3]) / 100,
+        "temperature_return": int(parts[4]) / 100
     }
 
 
@@ -36,7 +36,9 @@ def update():
     standard_data = fetch_standard_data()
     print("Publishing: {}".format(standard_data))
 
-    c.publish("mc66c/energy",   str(standard_data["energy"]), True)
-    c.publish("mc66c/volume",   str(standard_data["volume"]), True)
-    c.publish("mc66c/temp_in",  str(standard_data["temp_in"]), True)
-    c.publish("mc66c/temp_out", str(standard_data["temp_out"]), True)
+    c.publish("mc66c/energy",             str(standard_data["energy"]), True)
+    c.publish("mc66c/volume",             str(standard_data["volume"]), True)
+    c.publish("mc66c/temperature_flow",
+              str(standard_data["temperature_flow"]), True)
+    c.publish("mc66c/temperature_return",
+              str(standard_data["temperature_return"]), True)
